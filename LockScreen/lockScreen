@@ -1,0 +1,8 @@
+#!/bin/bash
+# Read and store current brightness
+BRIGHTNESS=$(xbacklight)
+# Turn screen off and lock
+xbacklight = 0 -time 0
+i3lock -n -u -c000000 -e 
+# When password is input, i3lock will unlock and we can reset previous brightness
+xbacklight = $BRIGHTNESS -time 0
