@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [[ $# -ne 1 ]]
+then
+	echo "Usage: $0 <command>"
+	exit 1
+fi
+
+bluetoothctl info 08:DF:1F:9A:66:6C | grep -q "Connected: yes"
+if [[ $? -eq 0 ]]
+then
+	if [[ "$1" == "up" ]]
+	then
+		cmd="Up"
+	else
+		cmd="Down"
+	fi
+	dbus-send --system --dest=org.bluez --type=method_call --print-reply /org/bluez/hci0/dev_08_DF_1F_9A_66_6C org.bluez.MediaControl1.Volume$cmd
+else
+	if [[ "$1" == "up" ]]
+	then
+		cmd="+5%"
+	else
+		cmd="-5%"
+	fi
+	pactl set-sink-volume `pacmd stat | grep "Default sink" | cut -d' ' -f4` $cmd
+fi
