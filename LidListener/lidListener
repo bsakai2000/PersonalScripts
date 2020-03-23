@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Listen for ACPI events
+acpi_listen |
+	while read -r line
+	do
+		# When lid is closed, store backlight and turn it off
+		echo $line | grep -q 'LID close'
+		if [[ $? -eq 0 ]]
+		then
+			# Read and store current brightness
+			BRIGHTNESS=$(xbacklight)
+			# Turn screen off
+			xbacklight = 0 -time 0
+		fi
+		# When lid is opened, restore backlight
+		echo $line | grep -q 'LID open'
+		if [[ $? -eq 0 ]]
+		then
+			# Puts backlight brightness back as it was
+			xbacklight = $BRIGHTNESS -time 0
+		fi
+	done
