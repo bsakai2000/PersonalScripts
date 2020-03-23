@@ -1,14 +1,17 @@
 #!/bin/bash
 
+# Check that we have exactly one command
 if [[ $# -ne 1 ]]
 then
 	echo "Usage: $0 <command>"
 	exit 1
 fi
 
+# If bluetooth device is connected, change bluetooth volume. Else change local volume
 bluetoothctl info 08:DF:1F:9A:66:6C | grep -q "Connected: yes"
 if [[ $? -eq 0 ]]
 then
+	# Read the command and send it on to the Bluez method endpoint
 	if [[ "$1" == "up" ]]
 	then
 		cmd="Up"
@@ -17,6 +20,7 @@ then
 	fi
 	dbus-send --system --dest=org.bluez --type=method_call --print-reply /org/bluez/hci0/dev_08_DF_1F_9A_66_6C org.bluez.MediaControl1.Volume$cmd
 else
+	# Change the volume on the default sink by 5%
 	if [[ "$1" == "up" ]]
 	then
 		cmd="+5%"

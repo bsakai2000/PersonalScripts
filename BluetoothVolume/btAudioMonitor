@@ -1,13 +1,19 @@
 #!/bin/bash 
 
+# Monitor system dbus
 dbus-monitor --system |
 	while read -r line
 	do
+		# If a is set, the last line contained the word "Volume", so this line has our volume
 		if [[ ! -z $a ]]
 		then
+			# Read the volume number and add a % sign to it
 			volume=$(echo $line | cut -d' ' -f3)%
+			# Change the bluez sink on the local machine to match received volume
 			pactl set-sink-volume bluez_sink.08_DF_1F_9A_66_6C.a2dp_sink $volume
+			# Reset a for the next set
 			unset a
 		fi
+		# Set a if the next line will contain the volume we want to set
 		a="`echo $line | grep Volume`"
 	done
