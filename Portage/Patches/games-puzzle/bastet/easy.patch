@@ -1,0 +1,14 @@
+diff --git a/main.cpp b/main.cpp
+index ff922ed..4dbdfef 100644
+--- a/main.cpp
++++ b/main.cpp
+@@ -47,7 +47,8 @@ int main(int argc, char **argv){
+       break;
+     case 1:{
+       //ui.ChooseLevel();
+-      NoPreviewBlockChooser bc;
++      //NoPreviewBlockChooser bc;
++      RandomBlockChooser bc;
+       ui.Play(&bc);
+       ui.HandleHighScores(difficulty_hard);
+       ui.ShowHighScores(difficulty_hard);

@@ -1,0 +1,28 @@
+--- a/i3status.conf	2019-11-06 23:56:36.042480488 -0500
++++ b/i3status.conf	2019-11-07 00:10:28.053501119 -0500
+@@ -11,12 +11,13 @@
+         interval = 5
+ }
+ 
+-order += "ipv6"
+-order += "disk /"
++# order += "ipv6"
+ order += "wireless _first_"
+ order += "ethernet _first_"
+-order += "battery all"
++order += "disk /"
+ order += "load"
++order += "battery all"
++order += "volume master"
+ order += "tztime local"
+ 
+ wireless _first_ {
+@@ -45,3 +46,8 @@
+ disk "/" {
+         format = "%avail"
+ }
++
++volume master {
++	format = "%volume"
++	format_muted = "(%volume)"
++}

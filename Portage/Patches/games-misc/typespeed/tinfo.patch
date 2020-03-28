@@ -1,0 +1,28 @@
+diff --git a/configure.ac b/configure.ac
+index bdc31af..8ab7879 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -15,7 +15,9 @@ AC_PROG_MAKE_SET
+ AC_GNU_SOURCE
+ 
+ # Checks for libraries.
+-AC_CHECK_LIB([ncurses], [initscr])
++PKG_CHECK_MODULES([NCURSES], [ncurses], [], [exit 1])
++AM_GNU_GETTEXT_VERSION([0.19.6])
++AM_GNU_GETTEXT_REQUIRE_VERSION([0.19.6])
+ 
+ # I18N
+ AM_GNU_GETTEXT_VERSION([0.14.5])
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 012d728..cc6c32f 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -15,7 +15,7 @@ typespeed_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\" -DTVERSION=\"v$(VERSION)\" \
+ 	-DCONFIGFILE=\"$(sysconfdir)/typespeedrc\" \
+         -DHIGHFILE=\"$(highscoredir)/$(HIGHFILE)\" \
+ 	-DWORDDIR=\"$(WORDDIR)\" -DRULEDIR=\"$(RULEDIR)\"
+-typespeed_LDADD = @LIBINTL@
++typespeed_LDADD = @LIBINTL@ @NCURSES_LIBS@
+ typespeed_SOURCES = file.c gettext.h menu.c misc.c network.c pathnames.h \
+ 	    typespeed.c typespeed.h
+ 

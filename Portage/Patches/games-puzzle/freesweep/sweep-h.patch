@@ -1,0 +1,26 @@
+diff --git a/main.c b/main.c
+index 2c3f27f..ab80cdc 100644
+--- a/main.c
++++ b/main.c
+@@ -10,6 +10,8 @@
+ 
+ #include "sweep.h"
+ 
++DrawChars CharSet;
++
+ int main(int argc, char** argv)
+ {
+ 	GameStats* Game;
+diff --git a/sweep.h.in b/sweep.h.in
+index 403b684..6f27d41 100644
+--- a/sweep.h.in
++++ b/sweep.h.in
+@@ -245,7 +245,7 @@ struct FileBuf
+ FILE* DebugLog;
+ #endif /* DEBUG_LOG */
+ 
+-DrawChars CharSet;
++extern DrawChars CharSet;
+ 
+ /* These are the functions defined in files.c */
+ int SourceHomeFile(GameStats* Game);
