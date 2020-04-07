@@ -35,6 +35,8 @@
 static xcb_atom_t backlight;
 static xcb_connection_t* conn;
 static xcb_randr_output_t output;
+long int xcb_backlight_min = -1;
+long int xcb_backlight_max = -1;
 
 static long
 backlight_get ()
@@ -74,6 +76,18 @@ backlight_set (long value)
 	xcb_flush (conn);
 }
 
+static long
+backlight_min ()
+{
+	return xcb_backlight_min;
+}
+
+static long
+backlight_max ()
+{
+	return xcb_backlight_max;
+}
+
 static void
 find_output ()
 {
@@ -105,6 +119,17 @@ find_output ()
 			cur = backlight_get ();
 			if (cur != -1)
 			{
+				xcb_randr_query_output_property_cookie_t prop_cookie = xcb_randr_query_output_property (conn, output, backlight);
+				xcb_randr_query_output_property_reply_t *prop_reply = xcb_randr_query_output_property_reply (conn, prop_cookie, &error);
+
+				if (error != NULL || prop_reply == NULL) break;
+
+				if (prop_reply->range &&
+						xcb_randr_query_output_property_valid_values_length (prop_reply) == 2) {
+					int32_t *values = xcb_randr_query_output_property_valid_values (prop_reply);
+					xcb_backlight_min = values[0];
+					xcb_backlight_max = values[1];
+				}
 				break;
 			}
 		}
