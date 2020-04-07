@@ -7,3 +7,8 @@ level and backlight_set(long value) will change the current backlight level to
 minumum number to a set maximum number identified by backlight_min() and
 backlight_max().  This code was written for a project that never got written,
 but it took me long enough that I'd rather keep it here just in case. 
+
+Using the API, I wrote a simple xbacklight clone which can be compiled using
+the command
+
+	gcc xbacklight_clone.c `pkg-config --libs --cflags xcb-randr xcb`
